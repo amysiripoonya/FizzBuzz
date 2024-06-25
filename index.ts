@@ -1,32 +1,17 @@
 console.log("do something");
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= 255; i++) {
     
     let out = fb(i);
-    
-    // if (i % 7 == 0) {
-    //     if (out != i.toString()) {out += "Bang";} else {out = "Bang";}
-    // } 
+    out = append(7, "Bang", i, out);
+    out = replace(11, "Bong", i, out);
+    out = insert(13, "Fezz", i, out);
+    out = reverse(17, i, out);
 
-    // if (i % 11 == 0) {
-    //     out = "Bong";
-    // } 
+    out = out.replace(/\s/g,'');
 
-    // if (i % 13 == 0) {
-    //     if (out == i.toString()) {
-    //         out = "Fezz";
-    //     } else {
-    //         if (out.includes("B")) {
-    //             let ind = out.indexOf("B");
-    //             out = out.slice(0,ind) + "Fezz" + out.slice(ind, out.length);
-    //         } else {
-    //             out += "Fezz";
-    //         }
-    //     }
-    // } 
-
-
-
-    
+    if (out == "") {
+        out = i.toString();
+    }
     console.log(out);
 }
 
@@ -34,15 +19,58 @@ function fb(i: number) : string {
     let out = "";
 
     if (i % 3 == 0) {
-		out = "Fizz";
+		out = " Fizz";
 	}
 
     if (i % 5 == 0) {
-        out += "Buzz";
+        out += " Buzz";
     }
 
-    if (out == "") {
-        out = i.toString();
-    }
+    
     return out;
 }
+
+function append(cond: number, rep: string, i: number, inp: string) : string {
+    if (i % cond == 0) {
+        if (inp != "") {inp += " " + rep;} else {inp = rep;}
+    }
+    return inp;
+}
+
+function replace(cond: number, rep: string, i: number, inp: string) {
+    if (i % cond == 0) {
+        inp = rep;
+    } 
+    return inp;
+}
+
+function insert(cond: number, rep: string, i: number, inp: string) {
+    if (i % cond == 0) {
+        if (inp == i.toString()) {
+            inp = rep;
+        } else {
+            if (inp.includes("B")) {
+                let ind = inp.indexOf("B");
+                inp = inp.slice(0,ind) + " " + rep + " " + inp.slice(ind, inp.length);
+            } else {
+                inp += rep;
+            }
+        }
+    } 
+
+    return inp;
+}
+
+function reverse(cond: number, i: number, inp: string) {
+    if (i % cond == 0) {
+        let arr = inp.split(" ");
+        arr = arr.reverse();
+        inp = arr.join("");
+    }
+
+    return inp;
+
+}
+
+
+
