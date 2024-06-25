@@ -1,76 +1,84 @@
-console.log("do something");
-for (let i = 1; i <= 255; i++) {
-    
-    let out = fb(i);
-    out = append(7, "Bang", i, out);
-    out = replace(11, "Bong", i, out);
-    out = insert(13, "Fezz", i, out);
-    out = reverse(17, i, out);
+function main() {
+    for (let i = 1; i <= 255; i++) {
 
-    out = out.replace(/\s/g,'');
+        const intermediate = reverse(17, i,
+            insert(13, "Fezz", i,
+                replace(11, "Bong", i,
+                    append(7, "Bang", i, fizzbuzz(i)))));
 
-    if (out == "") {
-        out = i.toString();
+        let result: string;
+        if (intermediate.length === 0) {
+            result = i.toString();
+        } else {
+            result = intermediate.join("");
+        }
+        console.log(result);
     }
-    console.log(out);
 }
 
-function fb(i: number) : string {
-    let out = "";
+
+
+function fizzbuzz(i: number) : string[] {
+    let out = [];
 
     if (i % 3 == 0) {
-		out = " Fizz";
+		out = ["Fizz"];
 	}
 
     if (i % 5 == 0) {
-        out += " Buzz";
+        out.push("Buzz");
     }
 
-    
     return out;
 }
 
-function append(cond: number, rep: string, i: number, inp: string) : string {
-    if (i % cond == 0) {
-        if (inp != "") {inp += " " + rep;} else {inp = rep;}
+function append(multof: number, rep: string, i: number, inp: string[]) : string[] {
+    if (i % multof == 0) {
+        if (inp.length !== 0) {inp.push(rep);} else {inp = [rep];}
     }
     return inp;
 }
 
-function replace(cond: number, rep: string, i: number, inp: string) {
-    if (i % cond == 0) {
-        inp = rep;
+function replace(multof: number, rep: string, i: number, inp: string[]): string[] {
+    if (i % multof == 0) {
+        inp = [rep];
     } 
     return inp;
 }
 
-function insert(cond: number, rep: string, i: number, inp: string) {
-    if (i % cond == 0) {
-        if (inp == i.toString()) {
-            inp = rep;
+function insert(multof: number, rep: string, i: number, inp: string[]): string[] {
+    if (i % multof == 0) {
+        // if (inp.length !== 0) {
+        //     inp = [rep];
+        // } else {
+        //     if (inp.includes("B")) {
+        //         let ind = inp.indexOf("B");
+        //         inp = `${inp.slice(0,ind)} ${rep} ${inp.slice(ind, inp.length)}`;
+        //     } else {
+        //         inp += rep;
+        //     }
+        // }
+        let ind = inp.indexOf(inp.find(s => s.startsWith("B")));
+        if (ind === -1) {
+            inp.push(rep);
         } else {
-            if (inp.includes("B")) {
-                let ind = inp.indexOf("B");
-                inp = inp.slice(0,ind) + " " + rep + " " + inp.slice(ind, inp.length);
-            } else {
-                inp += rep;
-            }
+            const first = inp.slice(0, ind);
+            first.push(rep);
+            const second = inp.slice(ind, inp.length);
+            inp = first.concat(second);
         }
     } 
 
     return inp;
 }
 
-function reverse(cond: number, i: number, inp: string) {
-    if (i % cond == 0) {
-        let arr = inp.split(" ");
-        arr = arr.reverse();
-        inp = arr.join("");
+function reverse(multof: number, i: number, inp: string[]): string[] {
+    if (i % multof == 0) {
+        inp.reverse();
     }
 
     return inp;
 
 }
 
-
-
+main();
